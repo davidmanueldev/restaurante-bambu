@@ -17,7 +17,7 @@ export default function CartPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (window.location.href.includes('canceled=1')) {
-        toast.error('Payment failed 😔');
+        toast.error('El pago falló 😔');
       }
     }
   }, []);
@@ -66,16 +66,16 @@ export default function CartPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Preparing your order...',
-      success: 'Redirecting to payment...',
-      error: 'Something went wrong... Please try again later',
+      loading: 'Preparando tu pedido...',
+      success: 'Redirigiendo al pago...',
+      error: 'Algo salió mal... Por favor, intenta de nuevo.',
     })
   }
 
   if (cartProducts?.length === 0) {
     return (
       <section className="mt-8 text-center">
-        <SectionHeaders mainHeader="Cart" />
+        <SectionHeaders mainHeader="Carrito de Compras" />
         <p className="mt-4">Tu carrito de compras está vacío 😔</p>
       </section>
     );
@@ -95,6 +95,7 @@ export default function CartPage() {
             <CartProduct
               key={index}
               product={product}
+              index={index} // Pasamos el índice del producto al componente CartProduct
               onRemove={removeCartProduct}
             />
           ))}

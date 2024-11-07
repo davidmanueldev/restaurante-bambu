@@ -66,7 +66,7 @@ export async function POST(req) {
     shipping_options: [
       {
         shipping_rate_data: {
-          display_name: 'Delivery fee',
+          display_name: 'Gastos de envío',
           type: 'fixed_amount',
           fixed_amount: {amount: 500, currency: 'USD'},
         },
