@@ -1,3 +1,4 @@
+import Whatsapp from "@/components/icons/Whatsapp";
 import Header from "@/components/layout/Header";
 import Hero from "@/components/layout/Hero";
 import HomeMenu from "@/components/layout/HomeMenu";
@@ -26,9 +27,11 @@ export default function Home() {
           subHeader={'No dude en llamarnos'}
           mainHeader={'Contáctese con Nosotros'}
         />
-        <div className="mt-8">
-          <a className=" text-4xl underline bg-primary rounded-full px-4 py-2 text-white" href="tel:+5916229491">
-            +591 6229491
+        <div className="flex justify-center gap-2 mt-8">
+          <a className="flex justify-center bg-whatsapp items-center gap-2 text-white text-4xl px-4 py-2 rounded-full" href="tel:+59162294912">
+            <Whatsapp/>
+            {/* +591 62294912 */}
+            Contáctenos
           </a>
         </div>
       </section>

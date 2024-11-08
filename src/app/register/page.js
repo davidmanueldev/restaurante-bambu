@@ -35,15 +35,15 @@ export default function RegisterPage() {
       </h1>
       {userCreated && (
         <div className="my-4 text-center">
-          User created.<br />
-          Now you can{' '}
-          <Link className="underline" href={'/login'}>Login &raquo;</Link>
+          Usuario creado.<br />
+          Ahora puedes{' '}
+          <Link className="underline" href={'/login'}>Iniciar Sesión &raquo;</Link>
         </div>
       )}
       {error && (
         <div className="my-4 text-center">
-          An error has occurred.<br />
-          Please try again later
+          Un error ha ocurrido.<br />
+          Por favor intente de nuevo.
         </div>
       )}
       <form className="block max-w-xs mx-auto" onSubmit={handleFormSubmit}>

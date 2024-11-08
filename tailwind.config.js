@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#f13a01',
+        whatsapp: '#40c351',
       },
     },
   },
