@@ -106,9 +106,9 @@ export default function CartPage() {
               Total:
             </div>
             <div className="font-semibold pl-2 text-right">
-              ${subtotal}<br />
-              $5<br />
-              ${subtotal + 5}
+              Bs.{subtotal}<br />
+              Bs.5<br />
+              Bs.{subtotal + 5}
             </div>
           </div>
         </div>
