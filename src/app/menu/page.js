@@ -1,6 +1,7 @@
 'use client';
 import SectionHeaders from "@/components/layout/SectionHeaders";
 import MenuItem from "@/components/menu/MenuItem";
+import Search from "@/components/Search";
 import {useEffect, useState} from "react";
 
 export default function MenuPage() {
@@ -16,6 +17,8 @@ export default function MenuPage() {
   }, []);
   return (
     <section className="mt-8">
+      <p>a</p>
+      <Search/>
       {categories?.length > 0 && categories.map(c => (
         <div key={c._id}>
           <div className="text-center">
