@@ -22,7 +22,7 @@ export default function Hero() {
             <Right />
           </button>
           <button className="flex items-center border-0 gap-2 py-2 text-gray-600 font-semibold">
-            Saber más
+            <a href="https://www.google.com">Saber más</a>
             <Right />
           </button>
         </div>

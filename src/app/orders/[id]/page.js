@@ -38,7 +38,7 @@ export default function OrderPage() {
   return (
     <section className="max-w-2xl mx-auto mt-8">
       <div className="text-center">
-        <SectionHeaders mainHeader="Tú orden" />
+        <SectionHeaders mainHeader="Orden" />
         <div className="mt-4 mb-8">
           <p>Gracias por su compra</p>
           <p>Lo llamaremos cuando su pedido esté en camino</p>
@@ -55,14 +55,14 @@ export default function OrderPage() {
             ))}
             <div className="text-right py-2 text-gray-500">
               Subtotal:
-              <span className="text-black font-bold inline-block w-8">Bs.{subtotal}</span>
+              <span className="text-black font-bold inline-block w-8">Bs{subtotal}</span>
               <br />
-              Delivery:
-              <span className="text-black font-bold inline-block w-8">Bs.5</span>
+              Envío:
+              <span className="text-black font-bold inline-block w-8">Bs 5</span>
               <br />
               Total:
               <span className="text-black font-bold inline-block w-8">
-                Bs.{subtotal + 5}
+                Bs{subtotal + 5}
               </span>
             </div>
           </div>

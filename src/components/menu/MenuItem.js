@@ -83,7 +83,7 @@ export default function MenuItem(menuItem) {
                         onChange={() => setSelectedSize(size)}
                         checked={selectedSize?.name === size.name}
                         name="size"/>
-                      {size.name} Bs.{basePrice + size.price}
+                      {size.name} Bs {basePrice + size.price}
                     </label>
                   ))}
                 </div>
@@ -100,7 +100,7 @@ export default function MenuItem(menuItem) {
                         onChange={ev => handleExtraThingClick(ev, extraThing)}
                         checked={selectedExtras.map(e => e._id).includes(extraThing._id)}
                         name={extraThing.name} />
-                      {extraThing.name} +Bs.{extraThing.price}
+                      {extraThing.name} + Bs {extraThing.price}
                     </label>
                   ))}
                 </div>
@@ -111,7 +111,7 @@ export default function MenuItem(menuItem) {
                 src={image}>
                 <div className="primary sticky bottom-2"
                      onClick={handleAddToCartButtonClick}>
-                  Añadir por Bs.{selectedPrice}
+                  Añadir por Bs {selectedPrice}
                 </div>
               </FlyingButton>
               <button
