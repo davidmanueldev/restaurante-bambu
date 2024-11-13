@@ -31,7 +31,7 @@ export default function Home() {
           <a className="flex justify-center bg-whatsapp items-center gap-2 text-white font-semibold text-4xl px-4 py-2 rounded-full" href="tel:+59162294912">
             <Whatsapp/>
             {/* +591 62294912 */}
-            Pasen la tarea
+            +591 62294912
           </a>
         </div>
       </section>

@@ -47,7 +47,7 @@ export default function NewMenuItemPage() {
   }
 
   if (!data.admin) {
-    return 'Not an admin.';
+    return 'No es un administrador.';
   }
 
   return (
@@ -56,7 +56,7 @@ export default function NewMenuItemPage() {
       <div className="max-w-2xl mx-auto mt-8">
         <Link href={'/menu-items'} className="button">
           <Left />
-          <span>Show all menu items</span>
+          <span>Mostrar todos los items del menú</span>
         </Link>
       </div>
       <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />

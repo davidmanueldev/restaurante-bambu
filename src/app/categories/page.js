@@ -79,7 +79,7 @@ export default function CategoriesPage() {
   }
 
   if (!profileData.admin) {
-    return 'Not an admin';
+    return 'No es un administrador';
   }
 
   return (

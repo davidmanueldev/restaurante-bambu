@@ -80,7 +80,7 @@ export default function EditMenuItemPage() {
   }
 
   if (!data.admin) {
-    return 'Not an admin.';
+    return 'No es un administrador.';
   }
 
   return (

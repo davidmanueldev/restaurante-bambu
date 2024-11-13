@@ -34,18 +34,18 @@ export default function EditUserPage() {
     });
 
     await toast.promise(promise, {
-      loading: 'Saving user...',
-      success: 'User saved',
-      error: 'An error has occurred while saving the user',
+      loading: 'Guardando los cambios...',
+      success: 'Usuario guardado',
+      error: 'Ocurrió un error mientras se guardaba el usuario',
     });
   }
 
   if (loading) {
-    return 'Loading user profile...';
+    return 'Cargando perfil de usuario...';
   }
 
   if (!data.admin) {
-    return 'Not an admin';
+    return 'No es un administrador.';
   }
 
   return (
