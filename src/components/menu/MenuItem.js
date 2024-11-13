@@ -18,7 +18,7 @@ export default function MenuItem(menuItem) {
   const {addToCart} = useContext(CartContext);
 
   async function handleAddToCartButtonClick() {
-    console.log('add to cart');
+    console.log('Mostrando popup');
     const hasOptions = sizes.length > 0 || extraIngredientPrices.length > 0;
     if (hasOptions && !showPopup) {
       setShowPopup(true);
@@ -26,7 +26,7 @@ export default function MenuItem(menuItem) {
     }
     addToCart(menuItem, selectedSize, selectedExtras);
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('hiding popup');
+    console.log('Ocultando popup');
     setShowPopup(false);
   }
   function handleExtraThingClick(ev, extraThing) {
