@@ -22,9 +22,9 @@ export default function EditableImage({link, setLink}) {
       });
 
       await toast.promise(uploadPromise, {
-        loading: 'Uploading...',
-        success: 'Upload complete',
-        error: 'Upload error',
+        loading: 'Subiendo...',
+        success: 'Cargado',
+        error: 'Error al subir',
       });
     }
   }
@@ -36,7 +36,7 @@ export default function EditableImage({link, setLink}) {
       )}
       {!link && (
         <div className="text-center bg-gray-200 p-4 text-gray-500 rounded-lg mb-1">
-          No image
+          Sin imagen
         </div>
       )}
       <label>
