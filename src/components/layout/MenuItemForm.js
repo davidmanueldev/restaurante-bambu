@@ -47,10 +47,12 @@ export default function MenuItemForm({onSubmit,menuItem}) {
             onChange={ev => setName(ev.target.value)}
           />
           <label>Descripción</label>
-          <input
+          <textarea
             type="text"
             value={description}
             onChange={ev => setDescription(ev.target.value)}
+            className="w-full h-52 p-2 border border-gray-300 rounded-md"
+            placeholder="Escribe una breve descripción de los ingredientes..."
           />
           <label>Categoría</label>
           <select value={category} onChange={ev => setCategory(ev.target.value)}>

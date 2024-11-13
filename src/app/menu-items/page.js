@@ -28,7 +28,7 @@ export default function MenuItemsPage() {
   }
 
   return (
-    <section className="mt-8 max-w-2xl mx-auto">
+    <section className="mt-8 max-w-2xl5 mx-auto">
       <UserTabs isAdmin={true} />
       <div className="mt-8">
         <Link
@@ -45,7 +45,7 @@ export default function MenuItemsPage() {
             <Link
               key={item._id}
               href={'/menu-items/edit/'+item._id}
-              className="bg-gray-200 rounded-lg p-4"
+              className="bg-gray-200 rounded-lg p-4 mx-auto"
             >
               <div className="relative">
                 <Image

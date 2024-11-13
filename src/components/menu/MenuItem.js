@@ -68,8 +68,8 @@ export default function MenuItem(menuItem) {
                 width={300} height={200}
                 className="mx-auto" />
               <h2 className="text-lg font-bold text-center mb-2">{name}</h2>
-              <p className="text-center text-gray-500 text-sm mb-2">
-                {description}
+              <p className="text-center text-gray-500 text-sm mb-2" style={{ whiteSpace: 'pre-line' }}>
+                {description} {/* Aqui va la descripción de los ingredientes*/}
               </p>
               {sizes?.length > 0 && (
                 <div className="py-2">
