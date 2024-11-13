@@ -17,7 +17,6 @@ export default function MenuPage() {
   }, []);
   return (
     <section className="mt-8">
-      <p>a</p>
       <Search/>
       {categories?.length > 0 && categories.map(c => (
         <div key={c._id}>
