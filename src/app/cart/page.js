@@ -10,6 +10,7 @@ import {useContext, useEffect, useState} from "react";
 import toast from "react-hot-toast";
 
 export default function CartPage() {
+  
   const {cartProducts,removeCartProduct} = useContext(CartContext);
   const [address, setAddress] = useState({});
   const {data:profileData} = useProfile();
@@ -119,6 +120,7 @@ export default function CartPage() {
               addressProps={address}
               setAddressProp={handleAddressChange}
             />
+            
             <button type="submit">Pagar Bs {subtotal+5}</button>
           </form>
         </div>

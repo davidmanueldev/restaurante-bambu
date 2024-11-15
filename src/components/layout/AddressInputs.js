@@ -56,6 +56,9 @@ export default function AddressInputs({addressProps, setAddressProp, disabled = 
       <input
         disabled={disabled}
         type="tel"
+        maxLength={8}
+        minLength={8}
+        pattern="[6-7][0-9]{7}"
         placeholder="Número de celular"
         value={phone || ''}
         onChange={ev => setAddressProp('phone', ev.target.value)}
@@ -71,13 +74,21 @@ export default function AddressInputs({addressProps, setAddressProp, disabled = 
       />
       <div className="grid grid-cols-2 gap-2">
         <div>
-          <label>Código Postal</label>
+          <label>CI</label>
           <input
             disabled={disabled}
             type="text"
+            maxLength="8"
+            minLength={8}
             placeholder="Ingrese su código postal"
             value={postalCode || ''}
-            onChange={ev => setAddressProp('postalCode', ev.target.value)}
+            // onChange={ev => setAddressProp('postalCode', ev.target.value)}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, '');
+              if (value.length <= 8) {
+                setAddressProp('postalCode', value);
+              }
+            }}
           />
         </div>
         <div>
