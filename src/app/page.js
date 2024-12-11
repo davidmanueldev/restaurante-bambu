@@ -28,7 +28,7 @@ export default function Home() {
           mainHeader={'Contáctese con Nosotros'}
         />
         <div className="flex justify-center gap-2 mt-8">
-          <a className="flex justify-center bg-whatsapp items-center gap-2 text-white font-semibold text-4xl px-4 py-2 rounded-full" href="tel:+59162294912">
+          <a className="flex justify-center bg-whatsapp items-center gap-2 text-white font-semibold text-4xl px-4 py-2 rounded-full" href="https://api.whatsapp.com/send?phone=59162294912&text=Hola%2C%20tengo%20una%20consulta%20con%20mi%20pedido" target="_blank">
             <Whatsapp/>
             {/* +591 62294912 */}
             +591 62294912

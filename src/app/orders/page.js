@@ -42,8 +42,7 @@ export default function OrdersPage() {
                   (order.paid ? 'bg-green-500' : 'bg-red-400')
                   + ' p-2 rounded-md text-white w-24 text-center'
                 }>
-                  {order.paid ? 'Pago' : 'No pago'}
-                </div>
+                  {order.paid ? 'Pago' : 'No Pago'}                </div>
               </div>
               <div className="grow">
                 <div className="flex gap-2 items-center mb-1">
