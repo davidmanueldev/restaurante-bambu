@@ -10,7 +10,38 @@ export default function OrderPage() {
   const {clearCart} = useContext(CartContext);
   const [order, setOrder] = useState();
   const [loadingOrder, setLoadingOrder] = useState(true);
+  const [markingPaid, setMarkingPaid] = useState(false);
   const {id} = useParams();
+  
+  const markAsPaid = async () => {
+    setMarkingPaid(true);
+    try {
+      const response = await fetch('/api/orders/mark-paid', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({orderId: id}),
+      });
+      
+      if (response.ok) {
+        // Refrescar la orden
+        fetch('/api/orders?_id='+id).then(res => {
+          res.json().then(orderData => {
+            setOrder(orderData);
+          });
+        });
+        alert('Pedido marcado como pagado exitosamente');
+      } else {
+        alert('Error al marcar como pagado');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al marcar como pagado');
+    }
+    setMarkingPaid(false);
+  };
+
   useEffect(() => {
     if (typeof window.console !== "undefined") {
       if (window.location.href.includes('clear-cart=1')) {
@@ -42,6 +73,24 @@ export default function OrderPage() {
         <div className="mt-4 mb-8">
           <p>Gracias por su compra</p>
           <p>Lo llamaremos cuando su pedido esté en camino</p>
+          {order && (
+            <div className="mt-4">
+              <span className={`px-4 py-2 rounded ${order.paid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                {order.paid ? 'PAGADO' : 'NO PAGADO'}
+              </span>
+              {!order.paid && (
+                <div className="mt-4">
+                  <button
+                    onClick={markAsPaid}
+                    disabled={markingPaid}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                  >
+                    {markingPaid ? 'Marcando...' : 'Marcar como Pagado (Dev)'}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
       {loadingOrder && (

@@ -1,4 +1,5 @@
 import {Order} from "@/models/Order";
+import mongoose from "mongoose";
 
 const stripe = require('stripe')(process.env.STRIPE_SK);
 
@@ -16,12 +17,24 @@ export async function POST(req) {
     return Response.json(e, {status: 400});
   }
 
+  // Conectar a MongoDB
+  mongoose.connect(process.env.MONGO_URL);
+
   if (event.type === 'checkout.session.completed') {
-    console.log(event);
+    console.log('Checkout session completed:', event);
     const orderId = event?.data?.object?.metadata?.orderId;
     const isPaid = event?.data?.object?.payment_status === 'paid';
-    if (isPaid) {
-      await Order.updateOne({_id:orderId}, {paid:true});
+    
+    console.log('Order ID:', orderId);
+    console.log('Is Paid:', isPaid);
+    
+    if (isPaid && orderId) {
+      try {
+        const result = await Order.updateOne({_id:orderId}, {paid:true});
+        console.log('Order updated:', result);
+      } catch (error) {
+        console.error('Error updating order:', error);
+      }
     }
   }
 
