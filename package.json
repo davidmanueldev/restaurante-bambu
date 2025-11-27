@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "smoke": "node --loader ./scripts/mock-loader.mjs ./scripts/smoke-tests.mjs"
+    "smoke": "node --loader ./scripts/mock-loader.mjs ./scripts/smoke-tests.mjs",
+    "test:integration": "jest --config=jest.config.integration.js",
+    "test:unit": "jest --config=jest.config.unit.js"
   },
   "dependencies": {
     "@algolia/autocomplete-core": "^1.17.7",
@@ -27,12 +29,17 @@
     "uniqid": "^5.4.0"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^6.0.0",
     "@types/node": "20.8.9",
     "@types/react": "18.2.33",
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "14.0.0",
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^10.3.0",
+    "nock": "^14.0.10",
     "postcss": "^8",
+    "supertest": "^7.1.4",
     "tailwindcss": "^3",
     "typescript": "5.2.2"
   }
