@@ -102,24 +102,26 @@ export default function ChatWidget() {
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSubmit} className="p-3 bg-white border-t border-gray-100 flex gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Escribe tu consulta..."
-              className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
-              disabled={loading}
-            />
-            <button 
-              type="submit" 
-              disabled={loading || !input.trim()}
-              className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 pl-0.5">
-                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-              </svg>
-            </button>
+          <form onSubmit={handleSubmit} className="p-3 bg-white border-t border-gray-200">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Escribe tu consulta..."
+                className="flex-1 bg-gray-100 border border-gray-300 rounded-full px-4 py-2.5 text-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200"
+                disabled={loading}
+              />
+              <button 
+                type="submit" 
+                disabled={loading || !input.trim()}
+                className="bg-red-600 text-white w-10 h-10 rounded-full hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-md flex items-center justify-center flex-shrink-0"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                </svg>
+              </button>
+            </div>
           </form>
         </div>
       )}
