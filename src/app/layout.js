@@ -1,5 +1,6 @@
 import {AppProvider} from "@/components/AppContext";
 import Header from "@/components/layout/Header";
+import ChatWidget from "@/components/chat/ChatWidget";
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import {Toaster} from "react-hot-toast";
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
             <Toaster />
             <Header />
             {children}
+            <ChatWidget />
             <footer className="border-t p-8 text-center text-gray-500 mt-16">
               &copy; 2024 Restaurante Bambú | Todos los derechos reservados
             </footer>
