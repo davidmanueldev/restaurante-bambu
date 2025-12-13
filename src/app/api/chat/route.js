@@ -66,17 +66,24 @@ export async function POST(req) {
     tools: [tools],
   });
 
+  // System prompt as the base history
+  const systemHistory = [
+    {
+      role: "user",
+      parts: [{ text: "Eres el asistente virtual del Restaurante Bambú. Debes ser amable, profesional y ayudar a los clientes con información del menú, pedidos y servicios del restaurante. Responde siempre en español." }],
+    },
+    {
+      role: "model",
+      parts: [{ text: "¡Entendido! Soy el asistente virtual del Restaurante Bambú. Estoy aquí para ayudarte con nuestro menú, tomar consultas sobre pedidos, horarios y cualquier información que necesites. ¿En qué puedo ayudarte?" }],
+    },
+  ];
+
+  // Combine system history with conversation history from client
+  const conversationHistory = body.history || [];
+  const fullHistory = [...systemHistory, ...conversationHistory];
+
   const chat = model.startChat({
-    history: [
-      {
-        role: "user",
-        parts: [{ text: "Hola, eres el asistente del Restaurante. Compórtate como tal." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Hola! Soy el asistente virtual del Restaurante Bambú. Estoy aquí para ayudarte a explorar nuestro menú, resolver tus dudas sobre nuestros servicios o consultar el estado de tus pedidos. ¿En qué puedo ayudarte hoy?" }],
-      },
-    ],
+    history: fullHistory,
     generationConfig: {
       maxOutputTokens: 1000,
     },

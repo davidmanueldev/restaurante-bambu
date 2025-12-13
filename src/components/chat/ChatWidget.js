@@ -30,10 +30,19 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
+      // Build history for Gemini API format (excluding the message we just added)
+      const historyForAPI = messages.map(msg => ({
+        role: msg.role === "model" ? "model" : "user",
+        parts: [{ text: msg.text }]
+      }));
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({ 
+          message: userMsg,
+          history: historyForAPI 
+        }),
       });
 
       const data = await response.json();
