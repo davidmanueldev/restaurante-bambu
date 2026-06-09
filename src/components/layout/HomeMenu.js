@@ -14,21 +14,21 @@ export default function HomeMenu() {
     });
   }, []);
   return (
-    <section className="">
-      <div className="absolute left-0 right-0 w-full justify-start">
-        <div className="absolute left-0 -top-[70px] text-left -z-10">
-          <Image src={'/sallad1.png'} width={109} height={189}  alt={'sallad'} />
+    <section className="relative mt-24">
+      <div className="absolute left-0 right-0 w-full justify-start overflow-x-hidden pointer-events-none">
+        <div className="absolute -left-12 -top-[120px] text-left -z-10 opacity-40 md:opacity-100">
+          <Image src={'/sallad1.png'} width={160} height={280}  alt={'sallad'} className="rotate-12" />
         </div>
-        <div className="absolute -top-[100px] right-0 -z-10">
-          <Image src={'/sallad2.png'} width={107} height={195} alt={'sallad'} />
+        <div className="absolute -top-[150px] -right-12 -z-10 opacity-40 md:opacity-100">
+          <Image src={'/sallad2.png'} width={160} height={280} alt={'sallad'} className="-rotate-12" />
         </div>
       </div>
-      <div className="text-center mb-4">
+      <div className="text-center mb-16">
         <SectionHeaders
-          subHeader={'Elija'}
+          subHeader={'Elija entre'}
           mainHeader={'Nuestros Mejores Platos'} />
       </div>
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {bestSellers?.length > 0 && bestSellers.map(item => (
           <MenuItem key={item._id} {...item} />
         ))}

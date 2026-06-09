@@ -30,19 +30,23 @@ export default function EditableImage({link, setLink}) {
   }
 
   return (
-    <>
-      {link && (
-        <Image className="rounded-lg w-full h-full mb-1" src={link} width={250} height={250} alt={'avatar'} />
-      )}
-      {!link && (
-        <div className="text-center bg-gray-200 p-4 text-gray-500 rounded-lg mb-1">
-          Sin imagen
-        </div>
-      )}
-      <label>
+    <div className="flex flex-col items-center gap-4">
+      <div className="bg-gray-100 rounded-2xl p-2 w-full aspect-square relative overflow-hidden flex items-center justify-center border-2 border-dashed border-gray-200">
+        {link && (
+          <Image className="rounded-xl w-full h-full object-cover" src={link} width={250} height={250} alt={'avatar'} />
+        )}
+        {!link && (
+          <div className="text-center text-gray-400 font-medium">
+            Sin imagen
+          </div>
+        )}
+      </div>
+      <label className="w-full">
         <input type="file" className="hidden" onChange={handleFileChange} />
-        <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">Cambiar foto</span>
+        <span className="block border-2 border-gray-100 bg-white hover:bg-gray-50 rounded-full p-3 text-center cursor-pointer font-bold text-gray-600 transition-all active:scale-95 shadow-sm">
+          CAMBIAR FOTO
+        </span>
       </label>
-    </>
+    </div>
   );
 }

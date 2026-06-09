@@ -2,48 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-section.hero{
-    @apply block md:grid;
-    grid-template-columns: .4fr .6fr;
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+section.hero {
+    @apply block md:grid gap-12 items-center;
+    grid-template-columns: .5fr .5fr;
 }
 
 select,
 input[type="email"],
 input[type="password"],
 input[type="tel"],
-input[type="text"] {
-    @apply block w-full mb-2 rounded-xl;
-    @apply border p-2 border-gray-300 bg-gray-100;
+input[type="text"],
+textarea {
+    @apply block w-full mb-4 rounded-xl transition-all duration-200;
+    @apply border-2 p-3 border-gray-100 bg-gray-50/50;
+    @apply focus:border-primary-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary-100;
 }
+
 input[type="email"]:disabled,
 input[type="password"]:disabled,
 input[type="tel"]:disabled,
 input[type="text"]:disabled {
-    @apply bg-gray-300 border-0 cursor-not-allowed text-gray-500;
-}
-label{
-    @apply text-gray-500 text-sm leading-tight;
-}
-label + input{
-    margin-top: -2px;
-}
-button, .button{
-    @apply flex w-full justify-center gap-2 text-gray-700 font-semibold;
-    @apply border border-gray-300 rounded-xl px-6 py-2;
-}
-button[type="submit"], .submit, button.primary{
-    @apply border-primary bg-primary text-white;
-}
-button[type="submit"]:disabled, .submit:disabled{
-    @apply cursor-not-allowed bg-red-400;
-}
-div.tabs > * {
-    @apply bg-gray-300 text-gray-700 rounded-full py-2 px-4;
-}
-div.tabs > *.active{
-    @apply bg-primary text-white;
+    @apply bg-gray-200 border-0 cursor-not-allowed text-gray-400;
 }
 
-.flying-button-parent button{
-    @apply border-primary bg-primary text-white rounded-full;
+label {
+    @apply text-gray-600 text-sm font-semibold mb-1 ml-1 block;
+}
+
+button, .button {
+    @apply flex w-full justify-center items-center gap-3 font-bold transition-all duration-300;
+    @apply border-2 border-gray-100 rounded-full px-8 py-4;
+    @apply hover:scale-105 active:scale-95;
+}
+
+button[type="submit"], .submit, button.primary {
+    @apply border-primary-600 bg-primary-600 text-white shadow-lg shadow-primary-200/50;
+    @apply hover:bg-primary-500 hover:shadow-xl hover:shadow-primary-300/60;
+}
+
+button[type="submit"]:disabled, .submit:disabled {
+    @apply cursor-not-allowed bg-primary-300 border-primary-300 opacity-50 grayscale;
+}
+
+div.tabs > * {
+    @apply bg-gray-100 text-gray-500 rounded-full py-3 px-6 font-semibold transition-colors;
+}
+
+div.tabs > *.active {
+    @apply bg-primary-600 text-white shadow-md;
+}
+
+.flying-button-parent button {
+    @apply border-primary-600 bg-primary-600 text-white rounded-full shadow-md;
+}
+
+.card-premium {
+    @apply bg-white rounded-2xl border border-gray-100 p-8 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
 }

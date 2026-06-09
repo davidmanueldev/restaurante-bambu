@@ -10,12 +10,12 @@ function AuthLinks({ status, userName }) {
   if (status === "authenticated") {
     return (
       <>
-        <Link href={"/profile"} className="whitespace-nowrap">
-          Hola, {userName}
+        <Link href={"/profile"} className="whitespace-nowrap hover:text-primary-600 transition-colors">
+          Hola, <span className="font-bold text-primary-700">{userName}</span>
         </Link>
         <button
           onClick={() => signOut()}
-          className="bg-primary rounded-full text-white px-8 py-2"
+          className="bg-primary-600 hover:bg-primary-700 rounded-full text-white px-8 py-3 font-bold shadow-md shadow-primary-200 transition-all active:scale-95"
         >
           Cerrar Sesión
         </button>
@@ -25,10 +25,10 @@ function AuthLinks({ status, userName }) {
   if (status === "unauthenticated") {
     return (
       <>
-        <Link href={"/login"}>Iniciar Sesión</Link>
+        <Link href={"/login"} className="hover:text-primary-600 transition-colors">Iniciar Sesión</Link>
         <Link
           href={"/register"}
-          className="bg-primary rounded-full text-white px-8 py-2"
+          className="bg-primary-600 hover:bg-primary-700 rounded-full text-white px-8 py-3 font-bold shadow-md shadow-primary-200 transition-all active:scale-95"
         >
           Registro
         </Link>
@@ -48,24 +48,22 @@ export default function Header() {
     userName = userName.split(" ")[0];
   }
   return (
-    <header>
+    <header className="py-6 mb-12">
       <div className="flex items-center md:hidden justify-between">
-        <Link className="text-primary font-semibold text-2xl" href={"/"}>
+        <Link className="text-primary-600 font-black text-3xl tracking-tighter" href={"/"}>
           Bambú
         </Link>
-        <div className="flex gap-8 items-center">
-          {status === "authenticated" && (
-            <Link href={"/cart"} className="relative">
-              <ShoppingCart />
-              {cartProducts?.length > 0 && (
-                <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
-                  {cartProducts.length}
-                </span>
-              )}
-            </Link>
-          )}
+        <div className="flex gap-6 items-center">
+          <Link href={"/cart"} className="relative p-2 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors">
+            <ShoppingCart />
+            {cartProducts?.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-accent-fire text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full leading-none shadow-sm">
+                {cartProducts.length}
+              </span>
+            )}
+          </Link>
           <button
-            className="p-1 border"
+            className="p-2 bg-gray-50 rounded-full hover:bg-gray-100 transition-colors"
             onClick={() => setMobileNavOpen((prev) => !prev)}
           >
             <Bars2 />
@@ -75,37 +73,38 @@ export default function Header() {
       {mobileNavOpen && (
         <div
           onClick={() => setMobileNavOpen(false)}
-          className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center"
+          className="md:hidden fixed inset-x-4 top-24 p-8 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl z-50 flex flex-col gap-6 text-center border border-white/50"
         >
-          <Link href={"/"}>Inicio</Link>
-          <Link href={"/menu"}>Menú</Link>
-          <Link href={"/#about"}>Nosotros</Link>
-          <Link href={"/#contact"}>Contacto</Link>
-          <AuthLinks status={status} userName={userName} />
+          <Link href={"/"} className="text-lg font-semibold hover:text-primary-600">Inicio</Link>
+          <Link href={"/menu"} className="text-lg font-semibold hover:text-primary-600">Menú</Link>
+          <Link href={"/#about"} className="text-lg font-semibold hover:text-primary-600">Nosotros</Link>
+          <Link href={"/#contact"} className="text-lg font-semibold hover:text-primary-600">Contacto</Link>
+          <hr className="border-gray-100" />
+          <div className="flex flex-col gap-4">
+            <AuthLinks status={status} userName={userName} />
+          </div>
         </div>
       )}
       <div className="hidden md:flex items-center justify-between">
-        <nav className="flex items-center gap-8 text-gray-500 font-semibold">
-          <Link className="text-primary font-semibold text-2xl" href={"/"}>
+        <nav className="flex items-center gap-10 text-gray-500 font-medium">
+          <Link className="text-primary-600 font-black text-3xl tracking-tighter mr-4" href={"/"}>
             Bambú
           </Link>
-          <Link href={"/"}>Inicio</Link>
-          <Link href={"/menu"}>Menú</Link>
-          <Link href={"/#about"}>Nosotros</Link>
-          <Link href={"/#contact"}>Contacto</Link>
+          <Link href={"/"} className="hover:text-primary-600 transition-colors">Inicio</Link>
+          <Link href={"/menu"} className="hover:text-primary-600 transition-colors">Menú</Link>
+          <Link href={"/#about"} className="hover:text-primary-600 transition-colors">Nosotros</Link>
+          <Link href={"/#contact"} className="hover:text-primary-600 transition-colors">Contacto</Link>
         </nav>
-        <nav className="flex items-center gap-4 text-gray-500 font-semibold">
+        <nav className="flex items-center gap-8 text-gray-500 font-medium">
           <AuthLinks status={status} userName={userName} />
-          {status === "authenticated" && (
-            <Link href={"/cart"} className="relative">
-              <ShoppingCart />
-              {cartProducts?.length > 0 && (
-                <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
-                  {cartProducts.length}
-                </span>
-              )}
-            </Link>
-          )}
+          <Link href={"/cart"} className="relative p-3 bg-gray-50 rounded-full hover:bg-gray-100 transition-all hover:scale-110 active:scale-95">
+            <ShoppingCart />
+            {cartProducts?.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-accent-fire text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full leading-none shadow-md shadow-accent-fire/30">
+                {cartProducts.length}
+              </span>
+            )}
+          </Link>
         </nav>
       </div>
     </header>
