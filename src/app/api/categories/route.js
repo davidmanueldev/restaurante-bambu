@@ -4,9 +4,9 @@ import mongoose from "mongoose";
 
 export async function POST(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {name} = await req.json();
+  const {name, type} = await req.json();
   if (await isAdmin()) {
-    const categoryDoc = await Category.create({name});
+    const categoryDoc = await Category.create({name, type});
     return Response.json(categoryDoc);
   } else {
     return Response.json({});
@@ -15,9 +15,9 @@ export async function POST(req) {
 
 export async function PUT(req) {
   mongoose.connect(process.env.MONGO_URL);
-  const {_id, name} = await req.json();
+  const {_id, name, type} = await req.json();
   if (await isAdmin()) {
-    await Category.updateOne({_id}, {name});
+    await Category.updateOne({_id}, {name, type});
   }
   return Response.json(true);
 }

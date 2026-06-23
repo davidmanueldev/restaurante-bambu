@@ -6,7 +6,11 @@ import toast from "react-hot-toast";
 export const CartContext = createContext({});
 
 export function cartProductPrice(cartProduct) {
-  let price = cartProduct.basePrice;
+  if (cartProduct.isPlate) {
+    return cartProduct.basePrice || 0;
+  }
+  
+  let price = cartProduct.basePrice || 0;
   if (cartProduct.size) {
     price += cartProduct.size.price;
   }
@@ -52,7 +56,7 @@ export function AppProvider({children}) {
 
   function addToCart(product, size=null, extras=[]) {
     setCartProducts(prevProducts => {
-      const cartProduct = {...product, size, extras};
+      const cartProduct = product.isPlate ? {...product} : {...product, size, extras};
       const newProducts = [...prevProducts, cartProduct];
       saveCartProductsToLocalStorage(newProducts);
       return newProducts;

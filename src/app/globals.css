@@ -19,9 +19,18 @@ input[type="password"],
 input[type="tel"],
 input[type="text"],
 textarea {
-    @apply block w-full mb-4 rounded-xl transition-all duration-200;
-    @apply border-2 p-3 border-gray-100 bg-gray-50/50;
+    @apply block w-full mb-4 rounded-2xl transition-all duration-300;
+    @apply border-2 border-gray-100 bg-gray-50/50 p-4;
     @apply focus:border-primary-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary-100;
+}
+
+select {
+    @apply appearance-none cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.5em;
+    padding-right: 3rem;
 }
 
 input[type="email"]:disabled,
@@ -32,17 +41,17 @@ input[type="text"]:disabled {
 }
 
 label {
-    @apply text-gray-600 text-sm font-semibold mb-1 ml-1 block;
+    @apply text-primary-900 text-sm font-bold mb-2 ml-1 block;
 }
 
 button, .button {
-    @apply flex w-full justify-center items-center gap-3 font-bold transition-all duration-300;
-    @apply border-2 border-gray-100 rounded-full px-8 py-4;
+    @apply flex justify-center items-center gap-3 font-bold transition-all duration-300;
+    @apply border-2 border-transparent rounded-full px-8 py-4;
     @apply hover:scale-105 active:scale-95;
 }
 
 button[type="submit"], .submit, button.primary {
-    @apply border-primary-600 bg-primary-600 text-white shadow-lg shadow-primary-200/50;
+    @apply bg-primary-600 text-white shadow-lg shadow-primary-200/50;
     @apply hover:bg-primary-500 hover:shadow-xl hover:shadow-primary-300/60;
 }
 
@@ -50,18 +59,18 @@ button[type="submit"]:disabled, .submit:disabled {
     @apply cursor-not-allowed bg-primary-300 border-primary-300 opacity-50 grayscale;
 }
 
-div.tabs > * {
+div.tabs > a {
     @apply bg-gray-100 text-gray-500 rounded-full py-3 px-6 font-semibold transition-colors;
 }
 
-div.tabs > *.active {
+div.tabs > a.active {
     @apply bg-primary-600 text-white shadow-md;
 }
 
 .flying-button-parent button {
-    @apply border-primary-600 bg-primary-600 text-white rounded-full shadow-md;
+    @apply border-0 bg-primary-600 text-white rounded-full shadow-lg shadow-primary-200/50 px-8 py-3 w-full h-full;
 }
 
 .card-premium {
-    @apply bg-white rounded-2xl border border-gray-100 p-8 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+    @apply bg-white rounded-[2rem] border-2 border-gray-50 p-8 shadow-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
 }

@@ -8,6 +8,9 @@ const OrderSchema = new Schema({
   city: String,
   country: String,
   cartProducts: Object,
+  selectedTime: String,
+  paymentMethod: String,
+  advanceAmount: Number,
   paid: {type: Boolean, default: false},
 }, {timestamps: true});
 

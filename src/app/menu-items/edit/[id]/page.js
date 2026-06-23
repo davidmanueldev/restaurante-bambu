@@ -9,6 +9,7 @@ import Link from "next/link";
 import {redirect, useParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
+import SectionHeaders from "@/components/layout/SectionHeaders";
 
 export default function EditMenuItemPage() {
 
@@ -25,7 +26,7 @@ export default function EditMenuItemPage() {
         setMenuItem(item);
       });
     })
-  }, []);
+  }, [id]);
 
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
@@ -43,9 +44,9 @@ export default function EditMenuItemPage() {
     });
 
     await toast.promise(savingPromise, {
-      loading: 'Guardando esta sabrosa comida...',
-      success: 'Guardado',
-      error: 'Error',
+      loading: 'Actualizando item...',
+      success: '¡Actualizado correctamente!',
+      error: 'Error al actualizar',
     });
 
     setRedirectToItems(true);
@@ -64,8 +65,8 @@ export default function EditMenuItemPage() {
 
     await toast.promise(promise, {
       loading: 'Borrando...',
-      success: 'Borrado',
-      error: 'Error',
+      success: '¡Item eliminado!',
+      error: 'Error al eliminar',
     });
 
     setRedirectToItems(true);
@@ -75,32 +76,28 @@ export default function EditMenuItemPage() {
     return redirect('/menu-items');
   }
 
-  if (loading) {
-    return 'Cargando la información del usuario...';
+  if (loading || !menuItem) {
+    return <div className="text-center mt-24 text-gray-500 font-medium">Cargando información...</div>;
   }
 
   if (!data.admin) {
-    return 'No es un administrador.';
+    return <div className="text-center mt-24 text-red-500 font-bold">No tienes permisos de administrador.</div>;
   }
 
   return (
-    <section className="mt-8">
+    <section className="mt-8 mb-24 max-w-7xl mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="max-w-2xl mx-auto mt-8">
-        <Link href={'/menu-items'} className="button">
-          <Left />
-          <span>Mostrar todo los items del menú</span>
+      <div className="mt-12 text-center">
+        <SectionHeaders mainHeader="Editar Item" subHeader="Menú Admin" />
+      </div>
+      <div className="max-w-4xl mx-auto mt-8 mb-4">
+        <Link href={'/menu-items'} className="inline-flex items-center gap-2 text-primary-600 font-bold bg-primary-50 px-6 py-3 rounded-full hover:bg-primary-100 transition-colors">
+          <Left className="w-5 h-5" />
+          <span>Volver al Catálogo</span>
         </Link>
       </div>
-      <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} />
-      <div className="max-w-md mx-auto mt-2">
-        <div className="max-w-xs ml-auto pl-16">
-          <DeleteButton
-            label="Borrar este item del menú"
-            onDelete={handleDeleteClick}
-          />
-        </div>
-      </div>
+      
+      <MenuItemForm menuItem={menuItem} onSubmit={handleFormSubmit} onDelete={handleDeleteClick} />
     </section>
   );
 }

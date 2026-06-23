@@ -26,27 +26,32 @@ export default function UsersPage() {
   }
 
   return (
-    <section className="max-w-2xl mx-auto mt-8">
+    <section className="max-w-4xl mx-auto mt-8 mb-24">
       <UserTabs isAdmin={true} />
-      <div className="mt-8">
-        {users?.length > 0 && users.map(user => (
-          <div
-            key={user._id}
-            className="bg-gray-100 rounded-lg mb-2 p-1 px-4 flex items-center gap-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 grow">
-              <div className="text-gray-900">
-                {!!user.name && (<span>{user.name}</span>)}
-                {!user.name && (<span className="italic">*Nombre*</span>)}
+      <div className="mt-12">
+        <div className="space-y-3">
+          {users?.length > 0 && users.map(user => (
+            <div
+              key={user._id}
+              className="bg-white border border-gray-100 rounded-2xl p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-all">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 grow items-center">
+                <div className="text-gray-900 font-bold">
+                  {!!user.name && (<span>{user.name}</span>)}
+                  {!user.name && (<span className="italic text-gray-400 font-normal">Sin nombre</span>)}
+                </div>
+                <span className="text-gray-500 font-medium truncate">{user.email}</span>
+                <span className="hidden md:block text-xs font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-full w-fit">
+                  Usuario Registrado
+                </span>
               </div>
-              <span className="text-gray-500">{user.email}</span>
+              <div className="shrink-0">
+                <Link className="px-6 py-2 bg-gray-50 border-2 border-gray-100 text-gray-700 font-bold rounded-xl hover:border-primary-400 hover:bg-white transition-all inline-block" href={'/users/'+user._id}>
+                  Editar
+                </Link>
+              </div>
             </div>
-            <div>
-              <Link className="button" href={'/users/'+user._id}>
-                Edit
-              </Link>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

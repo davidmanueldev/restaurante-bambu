@@ -9,6 +9,7 @@ import Link from "next/link";
 import {redirect} from "next/navigation";
 import {useState} from "react";
 import toast from "react-hot-toast";
+import SectionHeaders from "@/components/layout/SectionHeaders";
 
 export default function NewMenuItemPage() {
 
@@ -30,9 +31,9 @@ export default function NewMenuItemPage() {
     });
 
     await toast.promise(savingPromise, {
-      loading: 'Guardando esta webada',
-      success: 'Guardado',
-      error: 'Error',
+      loading: 'Guardando el nuevo item...',
+      success: '¡Item guardado exitosamente!',
+      error: 'Hubo un error al guardar.',
     });
 
     setRedirectToItems(true);
@@ -43,20 +44,23 @@ export default function NewMenuItemPage() {
   }
 
   if (loading) {
-    return 'Cargando la información de usuario...';
+    return <div className="text-center mt-24 text-gray-500 font-medium">Cargando la información de usuario...</div>;
   }
 
   if (!data.admin) {
-    return 'No es un administrador.';
+    return <div className="text-center mt-24 text-red-500 font-bold">No tienes permisos de administrador.</div>;
   }
 
   return (
-    <section className="mt-8">
+    <section className="mt-8 mb-24 max-w-7xl mx-auto">
       <UserTabs isAdmin={true} />
-      <div className="max-w-2xl mx-auto mt-8">
-        <Link href={'/menu-items'} className="button">
-          <Left />
-          <span>Mostrar todos los items del menú</span>
+      <div className="mt-12 text-center">
+        <SectionHeaders mainHeader="Crear Nuevo Item" subHeader="Menú Admin" />
+      </div>
+      <div className="max-w-4xl mx-auto mt-8 mb-4">
+        <Link href={'/menu-items'} className="inline-flex items-center gap-2 text-primary-600 font-bold bg-primary-50 px-6 py-3 rounded-full hover:bg-primary-100 transition-colors">
+          <Left className="w-5 h-5" />
+          <span>Volver al Catálogo</span>
         </Link>
       </div>
       <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />

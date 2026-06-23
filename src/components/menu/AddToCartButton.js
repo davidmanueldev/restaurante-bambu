@@ -3,7 +3,7 @@ import FlyingButton from 'react-flying-item';
 export default function AddToCartButton({
   hasSizesOrExtras, onClick, basePrice, image
 }) {
-  const buttonClasses = "mt-4 bg-primary-600 hover:bg-primary-700 text-white rounded-full px-8 py-3 font-bold transition-all hover:scale-105 active:scale-95 shadow-md shadow-primary-200 w-full flex justify-center items-center gap-2";
+  const commonClasses = "bg-primary-600 hover:bg-primary-700 text-white rounded-full px-8 py-3 font-bold transition-all hover:scale-105 active:scale-95 shadow-md shadow-primary-200 w-full flex justify-center items-center gap-2";
 
   if (!hasSizesOrExtras) {
     return (
@@ -12,8 +12,8 @@ export default function AddToCartButton({
           targetTop={'5%'}
           targetLeft={'95%'}
           src={image}>
-          <div onClick={onClick} className={buttonClasses}>
-            Añadir <span className="text-primary-100/70">Bs {basePrice}</span>
+          <div onClick={onClick} className="w-full h-full flex items-center justify-center gap-2">
+            Añadir <span className="text-primary-100/70 font-medium">Bs {basePrice}</span>
           </div>
         </FlyingButton>
       </div>
@@ -23,10 +23,10 @@ export default function AddToCartButton({
     <button
       type="button"
       onClick={onClick}
-      className={buttonClasses}
+      className={commonClasses}
     >
-      <span>Elegir</span>
-      <span className="text-primary-100/70">desde Bs {basePrice}</span>
+      <span>Elegir Opciones</span>
+      <span className="text-primary-100/70 font-medium text-sm">Bs {basePrice}</span>
     </button>
   );
 }
