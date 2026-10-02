@@ -7,6 +7,7 @@ export default function MenuPage() {
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [searchPhrase, setSearchPhrase] = useState('');
+  const [recommendations, setRecommendations] = useState(null);
 
   useEffect(() => {
     fetch('/api/categories').then(res => {
@@ -15,6 +16,9 @@ export default function MenuPage() {
     fetch('/api/menu-items').then(res => {
       res.json().then(menuItems => setMenuItems(menuItems));
     });
+    fetch('/api/recommendations').then(res => {
+      res.json().then(data => setRecommendations(data)).catch(() => {});
+    }).catch(() => {});
   }, []);
 
   const filteredItems = menuItems.filter(item => 
@@ -51,6 +55,26 @@ export default function MenuPage() {
           </button>
         )}
       </div>
+
+      {/* ─── Sección de Recomendaciones ─── */}
+      {recommendations?.recommendations?.length > 0 && !searchPhrase && (
+        <div className="mb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="flex items-center gap-4 mb-10">
+            <h3 className="text-3xl font-black text-primary-950 tracking-tighter whitespace-nowrap">
+              {recommendations.source === 'personal' ? '🎯 Recomendado para ti' : '🔥 Lo más popular'}
+            </h3>
+            <div className="h-px bg-gray-100 grow"></div>
+            <span className="bg-primary-50 text-primary-600 px-4 py-1 rounded-full text-sm font-bold">
+              {recommendations.message}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {recommendations.recommendations.slice(0, 3).map(item => (
+              <MenuItem key={item._id} {...item} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {categories?.length > 0 && categories.map(c => {
         const categoryItems = filteredItems.filter(item => item.category === c._id);

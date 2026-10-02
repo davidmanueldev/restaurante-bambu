@@ -1,5 +1,6 @@
 import {AppProvider} from "@/components/AppContext";
 import Header from "@/components/layout/Header";
+import ChatWidget from "@/components/chat/ChatWidget";
 import { Outfit } from 'next/font/google'
 import './globals.css'
 import {Toaster} from "react-hot-toast";
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
             <footer className="border-t p-12 text-center text-gray-400 mt-24">
               &copy; 2026 The Grill Bambú | Todos los derechos reservados
             </footer>
+            <ChatWidget />
           </AppProvider>
         </main>
       </body>
