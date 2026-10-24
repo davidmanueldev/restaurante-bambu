@@ -1,6 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import ChatMessage from './ChatMessage';
 
 // Sugerencias rápidas para iniciar conversación
@@ -158,6 +159,42 @@ export default function ChatWidget() {
             {messages.map((msg, i) => (
               <ChatMessage key={i} role={msg.role} content={msg.content} />
             ))}
+
+            {/* ─── Cards visuales de recomendaciones ─── */}
+            {!hasInteracted && !loading && recommendations?.recommendations?.length > 0 && messages.length > 0 && (
+              <div className="mt-3 mb-1">
+                <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 px-1">
+                  {recommendations.message}
+                </p>
+                <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory">
+                  {recommendations.recommendations.slice(0, 4).map((item) => (
+                    <a
+                      key={item._id}
+                      href="/menu"
+                      className="flex-shrink-0 snap-start w-28 bg-white border border-gray-100 rounded-2xl p-2 shadow-sm hover:shadow-md hover:border-primary-200 transition-all group"
+                    >
+                      <div className="w-full h-16 bg-gray-50 rounded-xl overflow-hidden mb-2 flex items-center justify-center">
+                        {item.image ? (
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={64}
+                            height={64}
+                            className="object-contain w-full h-full group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <span className="text-2xl">🍽️</span>
+                        )}
+                      </div>
+                      <p className="text-[11px] font-bold text-gray-800 leading-tight line-clamp-2 mb-1">{item.name}</p>
+                      {item.basePrice > 0 && (
+                        <p className="text-[11px] text-primary-600 font-bold">Bs {item.basePrice}</p>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Typing indicator */}
             {loading && (

@@ -49,6 +49,12 @@ export default function UserTabs({isAdmin}) {
           >
             Usuarios
           </Link>
+          <Link
+            className={`px-6 py-3 rounded-full font-bold transition-all ${path === '/analytics' ? activeClass : inactiveClass}`}
+            href={'/analytics'}
+          >
+            📊 Analytics
+          </Link>
         </>
       )}
     </div>
