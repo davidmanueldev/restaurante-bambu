@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
+  const [error, setError] = useState('');
   const [loadingOrders, setLoadingOrders] = useState(true);
   const {loading, data:profile} = useProfile();
 
@@ -17,18 +18,22 @@ export default function OrdersPage() {
 
   function fetchOrders() {
     setLoadingOrders(true);
-    fetch('/api/orders').then(res => {
-      res.json().then(orders => {
-        setOrders(orders.reverse());
-        setLoadingOrders(false);
-      })
-    })
+    setError('');
+    fetch('/api/orders').then(async res => {
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'No se pudieron cargar los pedidos');
+      setOrders(data.reverse());
+    }).catch(error => {
+      setOrders([]);
+      setError(error.message);
+    }).finally(() => setLoadingOrders(false));
   }
 
   return (
     <section className="mt-8 max-w-2xl mx-auto">
       <UserTabs isAdmin={profile.admin} />
       <div className="mt-8">
+        {error && <p role="alert">{error}</p>}
         {loadingOrders && (
           <div>Cargando pedidos...</div>
         )}

@@ -1,19 +1,21 @@
-import {User} from "@/models/User";
-import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
+import {User} from '@/models/User';
+import {connectDB} from '@/libs/db';
+import {errorResponse, HttpError} from '@/libs/httpError';
+import bcrypt from 'bcryptjs';
 
 export async function POST(req) {
-  const body = await req.json();
-  mongoose.connect(process.env.MONGO_URL);
-  const pass = body.password;
-  if (!pass?.length || pass.length < 5) {
-    new Error('password must be at least 5 characters');
+  try {
+    const {name, email, password} = await req.json();
+    if (typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+        typeof password !== 'string' || password.length < 5 || password.length > 128 ||
+        (name !== undefined && (typeof name !== 'string' || name.length > 200))) {
+      throw new HttpError(400, 'Email, nombre o contraseña inválidos (mínimo 5 caracteres)');
+    }
+    await connectDB();
+    const user = await User.create({name, email: email.trim().toLowerCase(), password: await bcrypt.hash(password, 10)});
+    return Response.json({_id: user._id, email: user.email, name: user.name});
+  } catch (error) {
+    if (error.code === 11000) return Response.json({error: 'El email ya está registrado'}, {status: 409});
+    return errorResponse(error);
   }
-
-  const notHashedPassword = pass;
-  const salt = bcrypt.genSaltSync(10);
-  body.password = bcrypt.hashSync(notHashedPassword, salt);
-
-  const createdUser = await User.create(body);
-  return Response.json(createdUser);
 }

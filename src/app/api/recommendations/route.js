@@ -1,12 +1,12 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import {connectDB} from "@/libs/db";
+import { authOptions } from "@/libs/auth";
 import { Category } from "@/models/Category";
 import { MenuItem } from "@/models/MenuItem";
 import { Order } from "@/models/Order";
-import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
 
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;

@@ -1,14 +1,14 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import {connectDB} from "@/libs/db";
+import { authOptions } from "@/libs/auth";
 import { Category } from "@/models/Category";
 import { MenuItem } from "@/models/MenuItem";
 import { Order } from "@/models/Order";
 import { GoogleGenAI } from "@google/genai";
-import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 
 export async function POST(req) {
   try {
-    mongoose.connect(process.env.MONGO_URL);
+    await connectDB();
 
     const { message, conversationHistory = [] } = await req.json();
 
@@ -19,7 +19,7 @@ export async function POST(req) {
     if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "TU_API_KEY_AQUI") {
       return Response.json({
         reply:
-          "⚠️ El chatbot aún no está configurado. Por favor, agrega una API key de Google Gemini en el archivo .env (variable GEMINI_API_KEY). Puedes obtenerla gratis en https://aistudio.google.com/apikey",
+          "El asistente no está disponible en este momento. Intenta de nuevo más tarde.",
       });
     }
 

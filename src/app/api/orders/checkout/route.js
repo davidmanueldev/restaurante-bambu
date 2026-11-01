@@ -1,23 +1,14 @@
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
-import {Order} from "@/models/Order";
-import mongoose from "mongoose";
-import {getServerSession} from "next-auth";
+import {authOptions} from '@/libs/auth';
+import {prepareCheckout} from '@/libs/checkout';
+import {errorResponse, HttpError} from '@/libs/httpError';
+import {Order} from '@/models/Order';
+import {getServerSession} from 'next-auth';
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
-
-  const {cartProducts, address, selectedTime, paymentMethod, isLargeOrder} = await req.json();
-  const session = await getServerSession(authOptions);
-  const userEmail = session?.user?.email;
-
-  const orderDoc = await Order.create({
-    userEmail,
-    ...address,
-    cartProducts,
-    selectedTime,
-    paymentMethod,
-    paid: false,
-  });
-
-  return Response.json(orderDoc);
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) throw new HttpError(401, 'Inicia sesión');
+    const {orderData} = await prepareCheckout(await req.json(), session.user.email, true);
+    return Response.json(await Order.create(orderData));
+  } catch (error) { return errorResponse(error); }
 }

@@ -1,10 +1,10 @@
-import { isAdmin } from "@/app/api/auth/[...nextauth]/route";
+import {connectDB} from "@/libs/db";
+import { isAdmin } from "@/libs/auth";
 import { MenuItem } from "@/models/MenuItem";
 import { Order } from "@/models/Order";
-import mongoose from "mongoose";
 
 export async function GET(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
 
   const admin = await isAdmin();
   if (!admin) {

@@ -9,6 +9,7 @@ import {useContext, useEffect, useState} from "react";
 export default function OrderPage() {
   const {clearCart} = useContext(CartContext);
   const [order, setOrder] = useState();
+  const [error, setError] = useState('');
   const [loadingOrder, setLoadingOrder] = useState(true);
   const {id} = useParams();
   useEffect(() => {
@@ -18,15 +19,19 @@ export default function OrderPage() {
       }
     }
     if (id) {
+      const controller = new AbortController();
       setLoadingOrder(true);
-      fetch('/api/orders?_id='+id).then(res => {
-        res.json().then(orderData => {
-          setOrder(orderData);
-          setLoadingOrder(false);
-        });
-      })
+      setError('');
+      fetch('/api/orders?_id=' + id, {signal: controller.signal}).then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'No se pudo cargar el pedido');
+        setOrder(data);
+      }).catch(error => {
+        if (error.name !== 'AbortError') { setOrder(null); setError(error.message); }
+      }).finally(() => { if (!controller.signal.aborted) setLoadingOrder(false); });
+      return () => controller.abort();
     }
-  }, []);
+  }, [id, clearCart]);
 
   let subtotal = 0;
   if (order?.cartProducts) {
@@ -44,6 +49,7 @@ export default function OrderPage() {
           <p>Lo llamaremos cuando su pedido esté en camino</p>
         </div>
       </div>
+      {error && <p role="alert">{error}</p>}
       {loadingOrder && (
         <div>Loading order...</div>
       )}

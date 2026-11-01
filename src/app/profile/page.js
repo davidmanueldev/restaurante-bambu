@@ -54,13 +54,8 @@ export default function ProfilePage() {
 
   }
 
-  if (status === 'loading' || !profileFetched) {
-    return 'Loading...';
-  }
-
-  if (status === 'unauthenticated') {
-    return redirect('/login');
-  }
+  if (status === 'unauthenticated') return redirect('/login');
+  if (status === 'loading' || !profileFetched) return 'Loading...';
 
   return (
     <section className="mt-8">

@@ -6,6 +6,10 @@ export default function EditableImage({link, setLink}) {
   async function handleFileChange(ev) {
     const files = ev.target.files;
     if (files?.length === 1) {
+      if (files[0].size > 3 * 1024 * 1024) {
+        toast.error('La imagen debe pesar como máximo 3 MB');
+        return;
+      }
       const data = new FormData;
       data.set('file', files[0]);
 
@@ -42,7 +46,7 @@ export default function EditableImage({link, setLink}) {
         )}
       </div>
       <label className="w-full">
-        <input type="file" className="hidden" onChange={handleFileChange} />
+        <input type="file" className="hidden" accept="image/jpeg,image/png,image/webp,image/gif" onChange={handleFileChange} />
         <span className="block border-2 border-gray-100 bg-white hover:bg-gray-50 rounded-full p-3 text-center cursor-pointer font-bold text-gray-600 transition-all active:scale-95 shadow-sm">
           CAMBIAR FOTO
         </span>

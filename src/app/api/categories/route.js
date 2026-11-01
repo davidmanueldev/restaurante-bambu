@@ -1,9 +1,9 @@
-import {isAdmin} from "@/app/api/auth/[...nextauth]/route";
+import {connectDB} from "@/libs/db";
+import {isAdmin} from "@/libs/auth";
 import {Category} from "@/models/Category";
-import mongoose from "mongoose";
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
   const {name, type} = await req.json();
   if (await isAdmin()) {
     const categoryDoc = await Category.create({name, type});
@@ -14,7 +14,7 @@ export async function POST(req) {
 }
 
 export async function PUT(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
   const {_id, name, type} = await req.json();
   if (await isAdmin()) {
     await Category.updateOne({_id}, {name, type});
@@ -23,14 +23,14 @@ export async function PUT(req) {
 }
 
 export async function GET() {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
   return Response.json(
     await Category.find()
   );
 }
 
 export async function DELETE(req) {
-  mongoose.connect(process.env.MONGO_URL);
+  await connectDB();
   const url = new URL(req.url);
   const _id = url.searchParams.get('_id');
   if (await isAdmin()) {

@@ -5,12 +5,9 @@ export function useProfile() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);
-    fetch('/api/profile').then(response => {
-      response.json().then(data => {
-        setData(data);
-        setLoading(false);
-      });
-    })
+    fetch('/api/profile').then(async response => {
+      setData(response.ok ? await response.json() : false);
+    }).catch(() => setData(false)).finally(() => setLoading(false));
   }, []);
 
   return {loading, data};

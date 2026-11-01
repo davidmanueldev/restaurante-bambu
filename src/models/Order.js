@@ -11,6 +11,8 @@ const OrderSchema = new Schema({
   selectedTime: String,
   paymentMethod: String,
   advanceAmount: Number,
+  stripeSessionId: String,
+  expectedPaymentAmount: Number,
   paid: {type: Boolean, default: false},
 }, {timestamps: true});
 

@@ -1,110 +1,57 @@
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
-import {MenuItem} from "@/models/MenuItem";
-import {Order} from "@/models/Order";
-import mongoose from "mongoose";
-import {getServerSession} from "next-auth";
-const stripe = require('stripe')(process.env.STRIPE_SK);
+import {authOptions} from '@/libs/auth';
+import {prepareCheckout} from '@/libs/checkout';
+import {errorResponse, HttpError} from '@/libs/httpError';
+import {Order} from '@/models/Order';
+import {getServerSession} from 'next-auth';
+import Stripe from 'stripe';
 
 export async function POST(req) {
-  mongoose.connect(process.env.MONGO_URL);
-
-  const {cartProducts, address, selectedTime, paymentMethod, isLargeOrder} = await req.json();
-  const session = await getServerSession(authOptions);
-  const userEmail = session?.user?.email;
-
-  const orderDoc = await Order.create({
-    userEmail,
-    ...address,
-    cartProducts,
-    selectedTime,
-    paymentMethod,
-    paid: false,
-  });
-
-  let totalProductsPrice = 0;
-  const stripeLineItems = [];
-
-  for (const cartProduct of cartProducts) {
-    let productPrice = 0;
-    
-    if (cartProduct.isPlate) {
-      // Trust the client price for dynamic plates (in a real scenario, re-validate config here)
-      productPrice = cartProduct.basePrice;
-    } else {
-      const productInfo = await MenuItem.findById(cartProduct._id);
-      productPrice = productInfo.basePrice;
-      
-      if (cartProduct.size) {
-        const size = productInfo.sizes
-          .find(size => size._id.toString() === cartProduct.size._id.toString());
-        productPrice += size.price;
-      }
-      if (cartProduct.extras?.length > 0) {
-        for (const cartProductExtraThing of cartProduct.extras) {
-          const productExtras = productInfo.extraIngredientPrices;
-          const extraThingInfo = productExtras
-            .find(extra => extra._id.toString() === cartProductExtraThing._id.toString());
-          productPrice += extraThingInfo.price;
-        }
-      }
-    }
-
-    totalProductsPrice += productPrice;
-
-    if (paymentMethod === 'total') {
-      stripeLineItems.push({
-        quantity: 1,
-        price_data: {
-          currency: 'BOB',
-          product_data: {
-            name: cartProduct.name,
-          },
-          unit_amount: productPrice * 100,
-        },
-      });
-    }
-  }
-
-  // Handle Advance Payment
-  let advanceAmount = 0;
-  if (paymentMethod === 'advance' && isLargeOrder) {
-    advanceAmount = Math.round(totalProductsPrice * 0.3);
-    orderDoc.advanceAmount = advanceAmount;
-    await orderDoc.save();
-
-    stripeLineItems.push({
+  let stripe;
+  let stripeSession;
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) throw new HttpError(401, 'Inicia sesión');
+    const data = await req.json();
+    const priced = await prepareCheckout(data, session.user.email);
+    const order = new Order(priced.orderData);
+    const advance = data.paymentMethod === 'advance';
+    // Preserve the existing policy: round the 30% advance to whole bolivianos.
+    const advanceCents = Math.round((priced.total / 100) * 0.3) * 100;
+    if (advance) order.advanceAmount = advanceCents / 100;
+    const lineItems = advance ? [{
       quantity: 1,
-      price_data: {
-        currency: 'BOB',
-        product_data: {
-          name: "Adelanto de Reserva (30%)",
-          description: "Saldo a pagar al momento de recoger el pedido.",
-        },
-        unit_amount: advanceAmount * 100,
-      },
-    });
-  }
-
-  const stripeSession = await stripe.checkout.sessions.create({
-    line_items: stripeLineItems,
-    mode: 'payment',
-    customer_email: userEmail,
-    success_url: process.env.NEXTAUTH_URL + 'orders/' + orderDoc._id.toString() + '?clear-cart=1',
-    cancel_url: process.env.NEXTAUTH_URL + 'cart?canceled=1',
-    metadata: {orderId:orderDoc._id.toString()},
-    payment_intent_data: {
-      metadata:{orderId:orderDoc._id.toString()},
-    },
-    shipping_options: [
-      {
+      price_data: {currency: 'bob', product_data: {name: 'Adelanto de Reserva (30%)'}, unit_amount: advanceCents},
+    }] : priced.lines.map(line => ({
+      quantity: 1,
+      price_data: {currency: 'bob', product_data: {name: line.name}, unit_amount: line.amount},
+    }));
+    const baseUrl = process.env.NEXTAUTH_URL;
+    if (!baseUrl) throw new HttpError(503, 'El servicio de pagos no está configurado');
+    stripe = new Stripe(process.env.STRIPE_SK);
+    stripeSession = await stripe.checkout.sessions.create({
+      line_items: lineItems,
+      mode: 'payment',
+      customer_email: session.user.email,
+      success_url: new URL('/orders/' + order._id + '?clear-cart=1', baseUrl).toString(),
+      cancel_url: new URL('/cart?canceled=1', baseUrl).toString(),
+      metadata: {orderId: order._id.toString()},
+      payment_intent_data: {metadata: {orderId: order._id.toString()}},
+      shipping_options: [{
         shipping_rate_data: {
-          display_name: 'Gastos de envío / Procesamiento',
-          type: 'fixed_amount',
-          fixed_amount: {amount: 500, currency: 'BOB'},
+          display_name: 'Gastos de envío / Procesamiento', type: 'fixed_amount',
+          fixed_amount: {amount: 500, currency: 'bob'},
         },
-      }
-    ],
-  });
-
-  return Response.json(stripeSession.url);
+      }],
+    });
+    order.stripeSessionId = stripeSession.id;
+    order.expectedPaymentAmount = (advance ? advanceCents : priced.total) + 500;
+    await order.save();
+    return Response.json(stripeSession.url);
+  } catch (error) {
+    if (stripeSession) {
+      try { await stripe.checkout.sessions.expire(stripeSession.id); }
+      catch { console.error('No se pudo cancelar la sesión de pago'); }
+    }
+    return errorResponse(error);
+  }
 }
