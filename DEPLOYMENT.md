@@ -31,7 +31,7 @@ Configurar el entorno al que se vaya a desplegar.
 | GOOGLE_CLIENT_SECRET | Secreto del cliente OAuth. |
 | MY_AWS_ACCESS_KEY | Credencial con permiso de subida al bucket. |
 | MY_AWS_SECRET_KEY | Secreto de AWS. |
-| AWS_REGION | Región real del bucket; valor predeterminado actual: us-east-2. |
+| S3_REGION | Región real del bucket; valor predeterminado actual: us-east-2. |
 | AWS_S3_BUCKET | Bucket actual: restaurante-bambu. |
 | STRIPE_SK | Clave de Stripe en modo test. |
 | STRIPE_SIGN_SECRET | Secreto del webhook registrado para esta URL, distinto al de Stripe CLI local. |
